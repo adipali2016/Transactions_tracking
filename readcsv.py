@@ -9,7 +9,7 @@ from IPython.display import display
 from resolving_payments import check_card, check_upi, check_atm
 
 def reading_csv():
-    csv_reader = pd.read_table(r"C:/Users/asus/OneDrive - IIIT Bhopal\Documents/GitHub/Transaction-graphs/training_data.xls", engine="python")
+    csv_reader = pd.read_table(r"C:/Users/asus/OneDrive - IIIT Bhopal\Documents/GitHub/Transactions_tracking/training_data.xls", engine="python")
     start_ind = start_index(csv_reader)
     csv_reader = csv_reader[start_ind:]
     new_reader = csv_reader.iloc[0]
