@@ -5,6 +5,8 @@ def turn_to_table(arr, csv):
     for i, rows in csv.iterrows():
         if i in arr:
             dct = dict(rows)
+            #print(dct)
             df1 = pd.DataFrame(dct, index=range(1))
             df = pd.concat([df, df1])
-    return df.reset_index(drop=True, inplace=True)     
+            df.reset_index(drop=True, inplace=True)       
+    return df   
