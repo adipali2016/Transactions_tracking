@@ -2,6 +2,7 @@
 
 from collections import defaultdict
 from tkinter import Tk
+from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 from pandas.core.frame import DataFrame
@@ -9,6 +10,7 @@ from IPython.display import display
 from resolving_payments import check_card, check_upi, check_atm, summing
 from toTable import turn_to_table
 from resolving_dates import date_list
+from converting_to_plots import bar_graph, pie_chart
 
 def start_index(csv):
     for i, rows in csv.iterrows():
@@ -54,12 +56,14 @@ def creating_table(csv):
 
 
 def sum_list(dct,csv):
-    dct_sum = defaultdict(list)
+    dct_sum_debit = dict()
+    dct_sum_credit = dict()
     for i in dct:
         df = turn_to_table(dct[i],csv)
         sm = summing(df)
-        dct_sum[i].append(sm)
-    return dct_sum
+        dct_sum_debit[str(i)] = sm[0]
+        dct_sum_credit[str(i)] = sm[1]
+    return [dct_sum_debit,dct_sum_credit]
 
 
 if __name__=="__main__":
@@ -76,6 +80,9 @@ if __name__=="__main__":
     print(sum_upi)
     dct = date_list(csv)
     print(dct.keys())
-    dct_sm = sum_list(dct,csv)
-    print(dct_sm)
+    dct_ans = sum_list(dct, csv)
+    bar = bar_graph(dct_ans[0], dct_ans[1])
+    pie = pie_chart(dct_ans[0], dct_ans[1])
+    plt.show()
+    input()
     

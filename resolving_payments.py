@@ -39,10 +39,14 @@ def check_atm(df):
 
 
 def summing(csv):
-    sum_lt = 0
+    sum_lt = [0,0]
     for i, rows in csv.iterrows():
         i = rows['Debit']
         if "str" in str(type(i)):
             i = i.replace(",","")
-        sum_lt = sum_lt + float(i)
+        sum_lt[0] = sum_lt[0] + float(i)
+        i = rows["Credit"]
+        if "str" in str(type(i)):
+            i = i.replace(",","")
+        sum_lt[1] = sum_lt[1] + float(i)    
     return sum_lt 
