@@ -1,16 +1,14 @@
 #   This function will read csv and try to resolve it for better understanding
 
-from collections import defaultdict
-from tkinter import Tk
+import calendar
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
-from pandas.core.frame import DataFrame
-from IPython.display import display
 from resolving_payments import check_card, check_upi, check_atm, summing
 from toTable import turn_to_table
 from resolving_dates import date_list
 from converting_to_plots import bar_graph, pie_chart
+from tkinter.filedialog import askopenfilename
 
 def start_index(csv):
     for i, rows in csv.iterrows():
@@ -25,7 +23,9 @@ def end_index(csv):
     return -1 
 
 def reading_csv():
-    csv_reader = pd.read_table(r"C:/Users/asus/OneDrive - IIIT Bhopal\Documents/GitHub/Transactions_tracking/training_data.xls", engine="python")
+    #filename = askopenfilename()
+    filename = r"C:\Users\asus\OneDrive - IIIT Bhopal\Documents\GitHub\Transactions_tracking/training_data.xls"
+    csv_reader = pd.read_table(filename, engine="python")
     start_ind = start_index(csv_reader)
     csv_reader = csv_reader[start_ind:]
     new_reader = csv_reader.iloc[0]
@@ -66,21 +66,42 @@ def sum_list(dct,csv):
     return [dct_sum_debit,dct_sum_credit]
 
 
+def convert_keys(dct):
+    dct_debit, dct_credit = dct
+    new_dct_debit = dict()
+    new_dct_credit = dict()
+    print(dct_debit.keys())
+    for i in dct_debit.keys():
+        splt = i.split()
+        new_i = f"{calendar.month_name[int(splt[0])]} {splt[1]}"
+        print(new_i)
+        new_dct_debit[new_i] = dct_debit[i]
+        print(dct_debit.keys())
+    for i in dct_credit.keys():
+        splt = i.split()
+        print(splt[0], splt[1])
+        new_i = f"{calendar.month_name[int(splt[0])]} {splt[1]}"
+        new_dct_credit[new_i] = dct_credit[i]
+    return [new_dct_debit,new_dct_credit]
+
 if __name__=="__main__":
     csv = reading_csv()
     lt_upi = check_upi(csv)
     lt_card = check_card(csv)
     lt_atm = check_atm(csv)
-    print(len(lt_upi))
-    print(len(lt_card))
-    print(len(lt_atm))
+    #print(len(lt_upi))
+    #print(len(lt_card))
+    #print(len(lt_atm))
     df_upi = turn_to_table(lt_upi, csv)
     #print(df_upi)
     sum_upi = summing(df_upi)
-    print(sum_upi)
+    #print(sum_upi)
     dct = date_list(csv)
-    print(dct.keys())
+    #print(dct.keys())
     dct_ans = sum_list(dct, csv)
+    #print(dct_ans[0].keys())
+    dct_ans = convert_keys(dct_ans)
+    #print(dct_ans)
     bar = bar_graph(dct_ans[0], dct_ans[1])
     pie = pie_chart(dct_ans[0], dct_ans[1])
     plt.show()

@@ -8,5 +8,7 @@ def date_list(csv):
         temp_d = d[:len(d)-2] +"20"+ d[len(d)-2:] 
         date_obj = dt.datetime.strptime(temp_d, "%d-%b-%Y")
         month = date_obj.month
+        year = date_obj.year
+        month = f"{month} {year}" 
         dct_month[str(month)].append(i)
     return dct_month
