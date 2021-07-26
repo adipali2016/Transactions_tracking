@@ -70,16 +70,16 @@ def convert_keys(dct):
     dct_debit, dct_credit = dct
     new_dct_debit = dict()
     new_dct_credit = dict()
-    print(dct_debit.keys())
+    #print(dct_debit.keys())
     for i in dct_debit.keys():
         splt = i.split()
         new_i = f"{calendar.month_name[int(splt[0])]} {splt[1]}"
-        print(new_i)
+        #print(new_i)
         new_dct_debit[new_i] = dct_debit[i]
-        print(dct_debit.keys())
+        #print(dct_debit.keys())
     for i in dct_credit.keys():
         splt = i.split()
-        print(splt[0], splt[1])
+        #print(splt[0], splt[1])
         new_i = f"{calendar.month_name[int(splt[0])]} {splt[1]}"
         new_dct_credit[new_i] = dct_credit[i]
     return [new_dct_debit,new_dct_credit]
@@ -89,21 +89,29 @@ if __name__=="__main__":
     lt_upi = check_upi(csv)
     lt_card = check_card(csv)
     lt_atm = check_atm(csv)
-    #print(len(lt_upi))
-    #print(len(lt_card))
-    #print(len(lt_atm))
-    df_upi = turn_to_table(lt_upi, csv)
-    #print(df_upi)
-    sum_upi = summing(df_upi)
-    #print(sum_upi)
+    i=1;
+    # Bar graph and pie chart for Transactions based on months 
     dct = date_list(csv)
-    #print(dct.keys())
     dct_ans = sum_list(dct, csv)
-    #print(dct_ans[0].keys())
     dct_ans = convert_keys(dct_ans)
-    #print(dct_ans)
-    bar = bar_graph(dct_ans[0], dct_ans[1])
-    pie = pie_chart(dct_ans[0], dct_ans[1])
+    bar = bar_graph(dct_ans[0], dct_ans[1], i)
+    i += 1
+    pie = pie_chart(dct_ans[0], i)
+    i += 1
+
+    # Bar graph and pie chart for Transactions based on Payment types.
+    df_upi = turn_to_table(lt_upi, csv)
+    df_card = turn_to_table(lt_card, csv)
+    df_atm = turn_to_table(lt_atm, csv)
+    sum_upi = summing(df_upi)
+    sum_card = summing(df_card)
+    sum_atm = summing(df_atm)
+    bar_pay = bar_graph({'UPI': sum_upi[0] ,'Card': sum_card[0], 'ATM': sum_atm[0]}, {'UPI': sum_upi[1] ,'Card': sum_card[1], 'ATM': sum_atm[1]}, i)
+    i += 1
+    pie_pay = pie_chart({'UPI': sum_upi[0] ,'Card': sum_card[0], 'ATM': sum_atm[0]}, i)
+    i += 1
+
     plt.show()
+    
     input()
     

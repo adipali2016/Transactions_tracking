@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import calendar
 
-def bar_graph(dct_debit, dct_credit):
-    bar = plt.figure(1)
+def bar_graph(dct_debit, dct_credit, i):
+    bar = plt.figure(i)
     xpos = dct_debit.keys()
     ypos1 = dct_debit.values()
     ypos2 = dct_credit.values()
@@ -14,8 +14,8 @@ def bar_graph(dct_debit, dct_credit):
     plt.bar(ypos+0.2,ypos2,width=0.4,label="Credit")
     return bar
 
-def pie_chart(dct_debit, dct_credit):
-    pie = plt.figure(2)
+def pie_chart(dct_debit, i):
+    pie = plt.figure(i)
     keys = dct_debit.keys()
     dct_values = dct_debit.values()
     plt.pie(dct_values, labels = keys, autopct='%0.02f%%')
